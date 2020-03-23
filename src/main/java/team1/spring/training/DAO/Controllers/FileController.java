@@ -21,20 +21,21 @@ public class FileController {
         return fileService.getAll();
     }
 
-    @GetMapping("/{id}")
-    public UploadFile getById(@PathVariable Long id) {
-        return fileService.getById(id);
+    @GetMapping("/{name}")
+    public UploadFile getByName(@PathVariable String name) {
+        return fileService.getByName(name);
     }
 
     /**
      * this method return the file content
-     * @param id
+     * @param name
      * @return
      * @throws IOException
      */
-    @GetMapping(value = "/show/{id}", produces = {MediaType.ALL_VALUE, MediaType.IMAGE_JPEG_VALUE, MediaType.IMAGE_PNG_VALUE})
-    public @ResponseBody byte[] showById(@PathVariable Long id) throws IOException {
-        return fileService.showFileById(id);
+    @GetMapping(value = "/show/{name}", produces = {MediaType.ALL_VALUE,
+                                        MediaType.IMAGE_JPEG_VALUE, MediaType.IMAGE_PNG_VALUE})
+    public @ResponseBody byte[] showByName(@PathVariable String name) throws IOException {
+        return fileService.showFileByName(name);
     }
 
     @PostMapping("")
@@ -47,8 +48,8 @@ public class FileController {
         fileService.deleteAll();
     }
 
-    @PostMapping("/delete/{id}")
-    public void deleteById(@PathVariable Long id) {
-        fileService.deleteById(id);
+    @PostMapping("/delete/{name}")
+    public void deleteByName(@PathVariable String name) {
+        fileService.deleteByName(name);
     }
 }

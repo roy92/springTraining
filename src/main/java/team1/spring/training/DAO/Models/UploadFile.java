@@ -5,13 +5,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import javax.persistence.*;
 
 @Entity
-@Table(name="table_files")
+@Table(name="table_file")
 public class UploadFile {
 
     @Id
-    @GeneratedValue
     @JsonProperty
-    Long id;
+    @Column(name="name")
+    String name;
 
     @Column(name="location")
     @JsonProperty
@@ -21,8 +21,8 @@ public class UploadFile {
     @JsonProperty
     private String timestamp;
 
-    public UploadFile(long id, String location, String timestamp) {
-        this.id = id;
+    public UploadFile(String name, String location, String timestamp) {
+        this.name = name;
         this.location = location;
         this.timestamp = timestamp;
     }
@@ -37,5 +37,9 @@ public class UploadFile {
 
     public String getLocation() {
         return location;
+    }
+
+    public String getName() {
+        return name;
     }
 }

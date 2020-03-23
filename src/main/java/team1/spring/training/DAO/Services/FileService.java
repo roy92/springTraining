@@ -29,20 +29,20 @@ public class FileService {
         return (List<UploadFile>) fileRepository.findAll();
     }
 
-    public UploadFile getById(Long id) {
-        return fileRepository.findOne(id);
+    public UploadFile getByName(String name) {
+        return fileRepository.findOne(name);
     }
 
     public void deleteAll() {
         fileRepository.deleteAll();
     }
 
-    public void deleteById(Long id) {
-        fileRepository.delete(id);
+    public void deleteByName(String name) {
+        fileRepository.delete(name);
     }
 
-    public byte[] showFileById(Long id) throws IOException {
-        String filePath = getById(id).getLocation();
+    public byte[] showFileByName(String name) throws IOException {
+        String filePath = getByName(name).getLocation();
         File file = new File(filePath);
         return Files.readAllBytes(file.toPath());
     }
@@ -51,14 +51,13 @@ public class FileService {
         if (!multipartFile.isEmpty()) {
 
             if(! new File(DIRECTORY_NAME).exists())
-            {
                 new File(DIRECTORY_NAME).mkdir();
-            }
 
             convertMultiToFile(multipartFile);
 
             String filePath = DIRECTORY_NAME + multipartFile.getOriginalFilename();
-            UploadFile uploadFile = new UploadFile(filePath, formatter.format(date));
+            UploadFile uploadFile = new UploadFile(getNameFromPath(multipartFile.getOriginalFilename()),
+                                                                        filePath, formatter.format(date));
 
             fileRepository.save(uploadFile);
         } else {
@@ -74,5 +73,11 @@ public class FileService {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public String getNameFromPath(String path) {
+        int index = path.indexOf('.');
+
+        return path.substring(0, index);
     }
 }
