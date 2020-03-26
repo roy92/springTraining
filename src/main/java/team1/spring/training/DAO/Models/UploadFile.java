@@ -1,6 +1,8 @@
 package team1.spring.training.DAO.Models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 
@@ -10,15 +12,16 @@ public class UploadFile {
 
     @Id
     @JsonProperty
-    @Column(name="name")
-    String name;
+    @Getter @Setter
+    private String name;
 
-    @Column(name="location")
     @JsonProperty
+    @Getter @Setter
     private String location;
 
     @Column(name="time")
     @JsonProperty
+    @Getter @Setter
     private String timestamp;
 
     public UploadFile(String name, String location, String timestamp) {
@@ -33,13 +36,5 @@ public class UploadFile {
     }
 
     public UploadFile() {
-    }
-
-    public String getLocation() {
-        return location;
-    }
-
-    public String getName() {
-        return name;
     }
 }

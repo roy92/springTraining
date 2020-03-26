@@ -26,7 +26,7 @@ public class FileService {
     private FileRepository fileRepository;
 
     public List<UploadFile> getAll() {
-        return (List<UploadFile>) fileRepository.findAll();
+        return fileRepository.findAll();
     }
 
     public UploadFile getByName(String name) {
