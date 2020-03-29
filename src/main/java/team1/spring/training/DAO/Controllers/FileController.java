@@ -14,7 +14,7 @@ import java.util.List;
 public class FileController {
 
     @Autowired
-    FileService fileService;
+    private FileService fileService;
 
     @GetMapping("/all")
     public List<UploadFile> getAllFiles() {
@@ -27,7 +27,7 @@ public class FileController {
     }
 
     /**
-     * this method return the file content
+     * This method returns the file content
      * @param name
      * @return
      * @throws IOException
@@ -39,7 +39,7 @@ public class FileController {
     }
 
     @PostMapping("")
-    public void uploadFile(@RequestParam("file") MultipartFile file) throws Exception {
+    public void uploadFile(@RequestParam(value = "file") MultipartFile file) throws Exception {
         fileService.addFile(file);
     }
 

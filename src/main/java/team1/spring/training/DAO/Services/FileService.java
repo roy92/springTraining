@@ -3,6 +3,8 @@ package team1.spring.training.DAO.Services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import team1.spring.training.Exceptions.FileIsEmptyException;
+import team1.spring.training.Exceptions.FileWithThatNameExistException;
 import team1.spring.training.DAO.Models.UploadFile;
 import team1.spring.training.DAO.Repository.FileRepository;
 import java.io.File;
@@ -58,10 +60,11 @@ public class FileService {
             String filePath = DIRECTORY_NAME + multipartFile.getOriginalFilename();
             UploadFile uploadFile = new UploadFile(getNameFromPath(multipartFile.getOriginalFilename()),
                                                                         filePath, formatter.format(date));
+            checkIfFileWithThatNameExist(uploadFile);
 
             fileRepository.save(uploadFile);
         } else {
-            throw new Exception("The file is empty!");
+            throw new FileIsEmptyException();
         }
     }
 
@@ -79,5 +82,14 @@ public class FileService {
         int index = path.indexOf('.');
 
         return path.substring(0, index);
+    }
+
+    public void checkIfFileWithThatNameExist(UploadFile uploadFile) throws FileWithThatNameExistException {
+        List<UploadFile> allFiles = getAll();
+
+        for (UploadFile currentFile : allFiles) {
+            if (currentFile.getName().equals(uploadFile.getName()))
+                throw new FileWithThatNameExistException();
+        }
     }
 }

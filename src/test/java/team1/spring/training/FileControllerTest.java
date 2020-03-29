@@ -53,7 +53,7 @@ public class FileControllerTest {
     private FileService service;
 
     @Autowired
-    WebApplicationContext wContext;
+    private WebApplicationContext wContext;
 
     @Test
     public void whenGetAllFiles_thenReturnJsonArray() throws Exception {
@@ -72,21 +72,15 @@ public class FileControllerTest {
     }
 
     @Test
-    public void test() throws Exception {
+    public void whenPostFile_thenReturnOkResponse() throws Exception {
         ResultMatcher ok = MockMvcResultMatchers.status().isOk();
-        String fileName = "test.txt";
-        File file = new File(fileName);
-        //delete if exits
-        file.delete();
-
-        MockMultipartFile firstFile = new MockMultipartFile("user-file", fileName,
-                "text/plain", "test data".getBytes());
+        MockMultipartFile mockFile = new MockMultipartFile("file",
+                "filename.txt", "text/plain", "some xml".getBytes());
 
         MockMvc mockMvc = MockMvcBuilders.webAppContextSetup(wContext).build();
         MockHttpServletRequestBuilder builder = MockMvcRequestBuilders.fileUpload("/file")
-                .file(firstFile);
+                .file(mockFile);
         mockMvc.perform(builder).andExpect(ok)
                 .andDo(MockMvcResultHandlers.print());
-        Assert.assertTrue(file.exists());
     }
 }
